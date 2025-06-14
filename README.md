@@ -28,7 +28,7 @@ This project recreates the iconic *Missile Command* game with a focus on nostalg
 ## Installation
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/Craigosborne/missile-command.git
+   git clone https://github.com/Craig0sborne/missile-command.git
    
 ## How to Play
 Objective: Protect six cities from enemy missiles and smart bombs by launching defensive missiles to intercept them.
