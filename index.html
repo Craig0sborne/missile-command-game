@@ -833,7 +833,7 @@
         let bonusMessages = [];
         let bonusMessageCounter = 0;
         let lastCityRewardScore = 0;
-        let highScoreNamePrompted = false; // New flag to prevent multiple prompts
+        let highScoreNamePrompted = false;
 
         // Initialize starry sky with clusters
         function initStars() {
@@ -886,11 +886,9 @@
 
         // Update high score
         function updateHighScore() {
-            if (score > highScore) {
-                highScore = score;
-                localStorage.setItem('highScore', highScore);
-                console.log(`New high score: ${highScore}`);
-            }
+            highScore = score;
+            localStorage.setItem('highScore', highScore);
+            console.log(`New high score: ${highScore}`);
         }
 
         // Calculate wave bonus
@@ -901,7 +899,6 @@
             const doubleHitPoints = doubleHits * 1000 * bonusMultiplier;
             const totalBonus = cityPoints + ammoPoints + doubleHitPoints;
             score += totalBonus;
-            updateHighScore();
             scoreFlashCounter = 18;
             bonusMessages = [
                 { text: `Wave ${level} Bonus`, bold: true },
@@ -1235,7 +1232,6 @@
 
                     if (cities.every(city => city.isDestroyed) && !gameOver) {
                         gameOver = true;
-                        updateHighScore();
                         if (!gameOverSoundPlayed) {
                             playGameOverExplosionSound();
                             gameOverSoundPlayed = true;
@@ -1244,8 +1240,9 @@
                     }
 
                     if (gameOver) {
-                        // Prompt for high score name only once
-                        if (score > parseInt(localStorage.getItem('highScore') || '0') && !highScoreNamePrompted) {
+                        // Prompt for high score name only once if score exceeds high score
+                        if (score > highScore && !highScoreNamePrompted) {
+                            updateHighScore();
                             let name = prompt("New High Score! Enter your name (up to 10 letters):", "");
                             if (name) {
                                 name = name.trim().substring(0, 10);
@@ -1301,7 +1298,7 @@
             bonusMessageCounter = 0;
             lastCityRewardScore = 0;
             highScoreName = localStorage.getItem('highScoreName') || 'Anonymous';
-            highScoreNamePrompted = false; // Reset prompt flag
+            highScoreNamePrompted = false;
             playerMissiles = [];
             enemyMissiles = [];
             smartBombs = [];
