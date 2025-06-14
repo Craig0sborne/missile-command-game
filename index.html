@@ -833,6 +833,7 @@
         let bonusMessages = [];
         let bonusMessageCounter = 0;
         let lastCityRewardScore = 0;
+        let highScoreNamePrompted = false; // New flag to prevent multiple prompts
 
         // Initialize starry sky with clusters
         function initStars() {
@@ -887,21 +888,8 @@
         function updateHighScore() {
             if (score > highScore) {
                 highScore = score;
-                let name = prompt("New High Score! Enter your name (up to 10 letters):", "");
-                if (name) {
-                    name = name.trim().substring(0, 10);
-                    if (name.length === 0) {
-                        highScoreName = "Anonymous";
-                    } else {
-                        highScoreName = name;
-                    }
-                    localStorage.setItem('highScoreName', highScoreName);
-                } else {
-                    highScoreName = "Anonymous";
-                    localStorage.setItem('highScoreName', highScoreName);
-                }
                 localStorage.setItem('highScore', highScore);
-                console.log(`New high score: ${highScore} by ${highScoreName}`);
+                console.log(`New high score: ${highScore}`);
             }
         }
 
@@ -1251,11 +1239,25 @@
                         if (!gameOverSoundPlayed) {
                             playGameOverExplosionSound();
                             gameOverSoundPlayed = true;
-                            console.log(`Game over! Final score: ${score}, High score: ${highScore} by ${highScoreName}`);
+                            console.log(`Game over! Final score: ${score}, High score: ${highScore}`);
                         }
                     }
 
                     if (gameOver) {
+                        // Prompt for high score name only once
+                        if (score > parseInt(localStorage.getItem('highScore') || '0') && !highScoreNamePrompted) {
+                            let name = prompt("New High Score! Enter your name (up to 10 letters):", "");
+                            if (name) {
+                                name = name.trim().substring(0, 10);
+                                highScoreName = name.length === 0 ? "Anonymous" : name;
+                            } else {
+                                highScoreName = "Anonymous";
+                            }
+                            localStorage.setItem('highScoreName', highScoreName);
+                            highScoreNamePrompted = true;
+                            console.log(`High score name set to: ${highScoreName}`);
+                        }
+
                         ctx.save();
                         ctx.fillStyle = 'red';
                         ctx.font = '40px Orbitron, sans-serif';
@@ -1298,6 +1300,8 @@
             bonusMessages = [];
             bonusMessageCounter = 0;
             lastCityRewardScore = 0;
+            highScoreName = localStorage.getItem('highScoreName') || 'Anonymous';
+            highScoreNamePrompted = false; // Reset prompt flag
             playerMissiles = [];
             enemyMissiles = [];
             smartBombs = [];
@@ -1305,7 +1309,6 @@
             bonusTexts = [];
             bonusMultiplierMessages = [];
             particles = [];
-            highScoreName = localStorage.getItem('highScoreName') || 'Anonymous';
             initCities();
             initStars();
             updateSpawnInterval();
