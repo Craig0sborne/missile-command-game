@@ -400,12 +400,10 @@
 
             draw() {
                 ctx.save();
-                // White glow aura
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, 4, 0, Math.PI * 2);
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
                 ctx.fill();
-                // Smooth trail
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y);
                 ctx.lineTo(this.x - this.vx * 5, this.y - this.vy * 5);
@@ -473,26 +471,22 @@
 
             draw() {
                 ctx.save();
-                // Jagged trail puffs
                 this.trail.slice(-100).forEach(puff => {
                     ctx.beginPath();
                     ctx.arc(puff.x + Math.random() * 0.5 - 0.25, puff.y + Math.random() * 0.5 - 0.25, 1, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(128, 128, 128, ${1 - puff.age / 400})`;
                     ctx.fill();
                 });
-                // Gray trail line
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y);
                 ctx.lineTo(this.x - this.vx * 5, this.y - this.vy * 5);
                 ctx.strokeStyle = '#808080';
                 ctx.lineWidth = 1;
                 ctx.stroke();
-                // Red glow aura
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, 4, 0, Math.PI * 2);
                 ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
                 ctx.fill();
-                // Red missile head
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
                 ctx.fillStyle = 'red';
@@ -618,7 +612,6 @@
                 ctx.strokeStyle = (this.blinkCounter % 20 < 10) ? 'lime' : 'darkgreen';
                 ctx.lineWidth = 2;
                 ctx.stroke();
-                // Blinking green triangle head
                 if (this.blinkCounter % 20 < 10) {
                     ctx.beginPath();
                     ctx.moveTo(this.x, this.y - 5);
@@ -644,13 +637,11 @@
                 this.shockwaveRadius = 0;
                 this.frame = 0;
                 playExplosionKaboom();
-                // Existing orange sparks
                 for (let i = 0; i < 10; i++) {
                     const angle = Math.random() * Math.PI * 2;
                     const speed = Math.random() * 3 + 1;
                     particles.push(new Particle(this.x, this.y, Math.cos(angle) * speed, Math.sin(angle) * speed, 1, '255,165,0', 30));
                 }
-                // New debris particles
                 for (let i = 0; i < 5; i++) {
                     const angle = Math.random() * Math.PI * 2;
                     const speed = Math.random() * 2 + 1;
@@ -671,14 +662,12 @@
 
             draw() {
                 ctx.save();
-                // White core flash for first 5 frames
                 if (this.frame < 5) {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, 5, 0, Math.PI * 2);
                     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
                     ctx.fill();
                 }
-                // Yellow-orange gradient
                 const gradient = ctx.createRadialGradient(this.x, this.y, 3, this.x, this.y, this.radius);
                 gradient.addColorStop(0, 'rgba(255, 255, 0, 0.8)');
                 gradient.addColorStop(1, 'rgba(255, 165, 0, 0)');
@@ -758,16 +747,15 @@
                             ctx.fillStyle = this.flashCounter > 0 && Math.floor(this.flashCounter / 3) % 2 === 0 ? 'white' : gradient;
                             if (this.flashCounter > 0) this.flashCounter--;
                             ctx.beginPath();
-                            // Unique silhouettes
-                            if (this.index % 3 === 1) { // Dome
+                            if (this.index % 3 === 1) {
                                 ctx.arc(this.x, this.y - this.height, this.width / 2, Math.PI, 0);
                                 ctx.lineTo(this.x + this.width / 2, this.y);
                                 ctx.lineTo(this.x - this.width / 2, this.y);
-                            } else if (this.index % 3 === 2) { // Spire
+                            } else if (this.index % 3 === 2) {
                                 ctx.moveTo(this.x - this.width / 2, this.y);
                                 ctx.lineTo(this.x, this.y - this.height - 10);
                                 ctx.lineTo(this.x + this.width / 2, this.y);
-                            } else { // Flat (original trapezoid)
+                            } else {
                                 ctx.moveTo(this.x - this.width / 2, this.y);
                                 ctx.lineTo(this.x - this.width / 2 + 10, this.y - this.height);
                                 ctx.lineTo(this.x + this.width / 2 - 10, this.y - this.height);
@@ -775,14 +763,12 @@
                             }
                             ctx.closePath();
                             ctx.fill();
-                            // Animated windows
                             for (let i = 0; i < 3; i++) {
                                 for (let j = 0; j < 2; j++) {
                                     ctx.fillStyle = Math.random() < 0.1 && this.windowFrame % 20 < 10 ? 'rgba(255, 255, 255, 0.5)' : 'white';
                                     ctx.fillRect(this.x - this.width / 2 + 10 + i * 8, this.y - this.height + 10 + j * 8, 3, 3);
                                 }
                             }
-                            // White outline during bonus
                             if (bonusMessageCounter > 0) {
                                 ctx.strokeStyle = 'white';
                                 ctx.lineWidth = 2;
@@ -797,7 +783,6 @@
                             ctx.closePath();
                             ctx.fillStyle = `rgba(100, 100, 100, ${this.destructionCounter / 60})`;
                             ctx.fill();
-                            // Fire effect particles
                             for (let i = 0; i < 5; i++) {
                                 const color = Math.random() < 0.5 ? '255,69,0' : '255,0,0';
                                 particles.push(new Particle(this.x + (Math.random() - 0.5) * this.width, this.y - Math.random() * this.height, (Math.random() - 0.5) * 1, -Math.random() * 1.5, 1, color, 15));
@@ -817,6 +802,7 @@
         // Game variables
         let score = 0;
         let highScore = parseInt(localStorage.getItem('highScore') || '0');
+        let highScoreName = localStorage.getItem('highScoreName') || 'Anonymous';
         let gameOver = false;
         let paused = false;
         let gameStarted = false;
@@ -844,7 +830,7 @@
         let ammoFlashCounter = 0;
         let scoreFlashCounter = 0;
         let bonusMessage = '';
-        let bonusMessages = []; // New variable for stacked bonus
+        let bonusMessages = [];
         let bonusMessageCounter = 0;
         let lastCityRewardScore = 0;
 
@@ -858,13 +844,13 @@
             ];
             for (let i = 0; i < 150; i++) {
                 let x, y;
-                if (i < 75) { // 50% in clusters
+                if (i < 75) {
                     const cluster = clusters[Math.floor(Math.random() * 3)];
                     const angle = Math.random() * Math.PI * 2;
                     const radius = Math.random() * 100;
                     x = cluster.x + Math.cos(angle) * radius;
                     y = cluster.y + Math.sin(angle) * radius;
-                } else { // 50% random
+                } else {
                     x = Math.random() * canvas.width;
                     y = Math.random() * canvas.height;
                 }
@@ -901,8 +887,21 @@
         function updateHighScore() {
             if (score > highScore) {
                 highScore = score;
+                let name = prompt("New High Score! Enter your name (up to 10 letters):", "");
+                if (name) {
+                    name = name.trim().substring(0, 10);
+                    if (name.length === 0) {
+                        highScoreName = "Anonymous";
+                    } else {
+                        highScoreName = name;
+                    }
+                    localStorage.setItem('highScoreName', highScoreName);
+                } else {
+                    highScoreName = "Anonymous";
+                    localStorage.setItem('highScoreName', highScoreName);
+                }
                 localStorage.setItem('highScore', highScore);
-                console.log(`New high score: ${highScore}`);
+                console.log(`New high score: ${highScore} by ${highScoreName}`);
             }
         }
 
@@ -925,7 +924,7 @@
                 bonusMessages.push({ text: `${doubleHits} Double Hits x ${1000 * bonusMultiplier} = ${doubleHitPoints} Points` });
             }
             bonusMessages.push({ text: `Total = ${totalBonus} Points`, bold: true });
-            bonusMessageCounter = 1200; // 20 seconds at 60fps
+            bonusMessageCounter = 1200;
             paused = true;
             console.log(`Wave ${level} bonus: ${remainingCities} cities (${cityPoints} pts) + ${ammo} ammo (${ammoPoints} pts) + ${doubleHits} double hits (${doubleHitPoints} pts) = ${totalBonus} pts, Multiplier: x${bonusMultiplier}`);
         }
@@ -950,7 +949,7 @@
             ctx.textAlign = 'center';
             ctx.fillText('Missile Command', canvas.width / 2, canvas.height / 2 - 100);
             ctx.font = '30px Orbitron, sans-serif';
-            ctx.fillText(`High Score: ${highScore}`, canvas.width / 2, canvas.height / 2 - 20);
+            ctx.fillText(`High Score: ${highScore} by ${highScoreName}`, canvas.width / 2, canvas.height / 2 - 20);
             ctx.font = '20px Orbitron, sans-serif';
             ctx.fillText('Mouse click to fire missiles at incoming enemies', canvas.width / 2, canvas.height / 2 + 40);
             ctx.fillText('Protect your cities from destruction', canvas.width / 2, canvas.height / 2 + 70);
@@ -1060,7 +1059,6 @@
                         flashAlpha = (Math.floor(levelUpFlashCounter / 3) % 2 === 0) ? 0.5 : 0;
                         ctx.fillStyle = `rgba(0, 255, 0, ${flashAlpha})`;
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
-                        // Level X animation
                         ctx.save();
                         ctx.font = '60px Orbitron, sans-serif';
                         ctx.textAlign = 'center';
@@ -1180,7 +1178,6 @@
 
                     if (bonusMessageCounter > 0) {
                         bonusMessageCounter--;
-                        // Confetti particles
                         if (bonusMessageCounter % 30 === 0) {
                             for (let i = 0; i < 20; i++) {
                                 const x = Math.random() * canvas.width;
@@ -1189,7 +1186,6 @@
                                 particles.push(new Particle(x, y, (Math.random() - 0.5) * 2, Math.random() * 2, 1, color, 60));
                             }
                         }
-                        // Stacked bonus display
                         ctx.save();
                         ctx.fillStyle = 'white';
                         ctx.textAlign = 'center';
@@ -1203,7 +1199,7 @@
                         console.log(`Drawing stacked bonus messages: ${bonusMessages.map(m => m.text).join(' | ')}`);
                         if (bonusMessageCounter === 0 && !gameOver) {
                             paused = false;
-                            bonusMessages = []; // Clear messages
+                            bonusMessages = [];
                             console.log("Resumed game after bonus display");
                         }
                     }
@@ -1221,11 +1217,12 @@
                     ctx.fillText(`Level: ${level}`, 10, 60);
                     ctx.fillText(`Sound: ${muted ? 'OFF' : 'ON'}`, canvas.width - 100, 30);
                     ctx.textAlign = 'center';
-                    ctx.fillText(`${highScore}`, canvas.width / 2, canvas.height - 40);
-                    ctx.fillText(`HIGH SCORE`, canvas.width / 2, canvas.height - 20);
+                    ctx.fillText(`HIGH SCORE`, canvas.width / 2, canvas.height - 40);
+                    ctx.fillText(`${highScore}`, canvas.width / 2, canvas.height - 20);
+                    ctx.fillText(`${highScoreName}`, canvas.width / 2, canvas.height);
                     ctx.textAlign = 'left';
                     ctx.restore();
-                    console.log(`Drawing HUD: Score=${score}, Ammo=${ammo}, Level=${level}, HighScore=${highScore}`);
+                    console.log(`Drawing HUD: Score=${score}, Ammo=${ammo}, Level=${level}, HighScore=${highScore}, HighScoreName=${highScoreName}`);
 
                     ctx.save();
                     ctx.beginPath();
@@ -1254,7 +1251,7 @@
                         if (!gameOverSoundPlayed) {
                             playGameOverExplosionSound();
                             gameOverSoundPlayed = true;
-                            console.log(`Game over! Final score: ${score}, High score: ${highScore}`);
+                            console.log(`Game over! Final score: ${score}, High score: ${highScore} by ${highScoreName}`);
                         }
                     }
 
@@ -1265,7 +1262,7 @@
                         ctx.textAlign = 'center';
                         ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2);
                         ctx.fillText(`Final Score: ${score}`, canvas.width / 2, canvas.height / 2 + 50);
-                        ctx.fillText(`High Score: ${highScore}`, canvas.width / 2, canvas.height / 2 + 100);
+                        ctx.fillText(`High Score: ${highScore} by ${highScoreName}`, canvas.width / 2, canvas.height / 2 + 100);
                         ctx.restore();
                         document.getElementById('restartButton').style.display = 'block';
                         console.log("Drawing game over screen");
@@ -1308,6 +1305,7 @@
             bonusTexts = [];
             bonusMultiplierMessages = [];
             particles = [];
+            highScoreName = localStorage.getItem('highScoreName') || 'Anonymous';
             initCities();
             initStars();
             updateSpawnInterval();
